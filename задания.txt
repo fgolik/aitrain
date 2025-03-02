@@ -1,0 +1,38 @@
+import pandas as pd
+
+# Загружаем датасет
+df = pd.read_csv("train.csv")
+
+# Проверяем, где есть пропущенные значения
+print(df.isnull().sum())  # Покажет количество NaN в каждом столбце
+df["Age"] = df["Age"].fillna(df["Age"].median())# Заменяем пропущенные значения в столбце "Age" медианой
+print(df.isnull().sum())
+df["HomePlanet"] = df["HomePlanet"].fillna(df["HomePlanet"].mode()[0])# Заменяем пропущенные значения в столбце  модой
+print(df.isnull().sum())
+df["Cabin"] = df["Cabin"].fillna("Unknown")
+print(df.isnull().sum())
+# Заменяем пропущенные значения в столбце "VIP" средним значением
+df["VIP"] = df["VIP"].fillna(df["VIP"].mean())
+print(df.isnull().sum())
+
+
+……………………………………………………………………….
+
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+
+# Загружаем датасет
+df = pd.read_csv("train.csv")
+
+# Инициализация нормализаторов
+min_max_scaler = MinMaxScaler()  # Для MinMaxScaler
+standard_scaler = StandardScaler()  # Для StandardScaler
+
+# Применяем MinMaxScaler для столбца "Age"
+df["Age"] = min_max_scaler.fit_transform(df[["Age"]])
+
+# Или применяем StandardScaler для столбца "Age"
+df["Age"] = standard_scaler.fit_transform(df[["Age"]])
+
+# Проверяем результат
+print(df[["Age"]].head())
